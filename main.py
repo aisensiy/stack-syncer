@@ -13,6 +13,7 @@ class Config(object):
     ]
 
     SCHEDULER_VIEWS_ENABLED = True
+    SCHEDULER_TIMEZONE = 'UTC'
 
 
 def sync_stack():
