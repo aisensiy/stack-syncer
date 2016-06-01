@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_apscheduler import APScheduler
-from syncer import processor
+from syncer import processor, http_client, config, event_reader
 
 
 class Config(object):
@@ -18,7 +18,8 @@ class Config(object):
 
 
 def sync_stack():
-    processor.process()
+    runner = processor.Processor(http_client.HttpClient(), config.LAST_EVENT_FILE)
+    runner.process(event_reader.EventReader(http_client.HttpClient()))
 
 
 app = Flask(__name__)
