@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_apscheduler import APScheduler
-from syncer import event_reader
+from syncer import processor
 
 
 class Config(object):
@@ -18,7 +18,7 @@ class Config(object):
 
 
 def sync_stack():
-    event_reader.subscribe_events()
+    processor.process()
 
 
 app = Flask(__name__)
@@ -27,7 +27,7 @@ app.config.from_object(Config())
 
 @app.route("/")
 def hello():
-    return "Last sync id: " + event_reader.load_last_event_id()
+    return "Last sync id: " + processor.load_last_event_id()
 
 
 if __name__ == "__main__":

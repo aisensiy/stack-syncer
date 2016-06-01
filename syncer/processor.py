@@ -5,7 +5,7 @@ import os
 from http_client import HttpClient
 import event_reader
 
-logger = logging.getLogger()
+logger = logging.getLogger("processor")
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 http_client = HttpClient()
@@ -55,6 +55,7 @@ def process():
     last_event_id = load_last_event_id()
     logger.info('last event %s', last_event_id)
     events = event_reader.read_events(config.CDE_EVENT_ENTRYPOINT, last_event_id)
+    logger.info('events %d', len(events))
     for event in events:
         if event['type'] == 'StackCreatedEvent':
             create_stack(event)
