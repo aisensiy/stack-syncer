@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_apscheduler import APScheduler
+from syncer import event_parser
 
 
 class Config(object):
@@ -8,7 +9,7 @@ class Config(object):
             'id': 'job1',
             'func': '__main__:sync_stack',
             'trigger': 'interval',
-            'seconds': 10
+            'seconds': 60
         }
     ]
 
@@ -17,7 +18,7 @@ class Config(object):
 
 
 def sync_stack():
-    print 'hello world'
+    event_parser.subscribe_events()
 
 
 app = Flask(__name__)
