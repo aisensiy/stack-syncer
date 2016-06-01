@@ -27,7 +27,7 @@ app.config.from_object(Config())
 
 @app.route("/")
 def hello():
-    return "Hello, world!"
+    return "Last sync id: " + event_parser.load_last_event_id()
 
 
 if __name__ == "__main__":
