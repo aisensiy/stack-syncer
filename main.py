@@ -9,7 +9,7 @@ class Config(object):
             'id': 'job1',
             'func': '__main__:sync_stack',
             'trigger': 'interval',
-            'seconds': 6
+            'seconds': 60
         }
     ]
 
