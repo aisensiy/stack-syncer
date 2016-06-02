@@ -9,7 +9,7 @@ class Config(object):
             'id': 'job1',
             'func': '__main__:sync_stack',
             'trigger': 'interval',
-            'seconds': 60
+            'seconds': 6
         }
     ]
 
@@ -28,7 +28,7 @@ app.config.from_object(Config())
 
 @app.route("/")
 def hello():
-    return "Last sync id: " + processor.load_last_event_id()
+    return "Last sync id: " + processor.Processor(http_client.HttpClient(), config.LAST_EVENT_FILE).load_last_event_id()
 
 
 if __name__ == "__main__":
