@@ -22,23 +22,29 @@ class Processor:
                                        json={'user_name': config.KETSU_USERNAME,
                                              'user_password': config.KETSU_PASSWORD})
         if status_code != 200:
-            raise Exception("Fail to login ketsu")
+            logger.info("Fail to login ketsu")
+            return False
+        return True
 
     def _create_stack(self, event):
-        self._login()
+        if not self._login():
+            return
         stack = event['content']['stack']
-        if stack is None or stack['id'] is None or stack['name'] is None:
-            raise Exception('on stack created event no id or name')
+        if stack is None or 'id' not in stack or stack['id'] is None or 'name' not in stack or stack['name'] is None:
+            logger.info("on stack created event no id or name")
+            return
 
         status_code = http_client.post(config.KETSU_ENTRYPOINT + '/stacks',
                                        json={'id': stack['id'], 'name': stack['name']})
         logger.info("import stack %s %s get %d", stack['id'], stack['name'], status_code)
 
     def _update_stack(self, event):
-        self._login()
+        if not self._login():
+            return
         stack = event['content']['stack']
-        if stack is None or stack['id'] is None or stack['name'] is None:
-            raise Exception('on stack updated event no id or name')
+        if stack is None or 'id' not in stack or stack['id'] is None or 'name' not in stack or stack['name'] is None:
+            logger.info("on stack update event no id or name")
+            return
 
         status_code = http_client.put(config.KETSU_ENTRYPOINT + '/stacks/' + stack['id'], json={'name': stack['name']})
         logger.info("update stack %s %s get %d", stack['id'], stack['name'], status_code)
