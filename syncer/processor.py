@@ -16,7 +16,7 @@ class Processor:
         self.storage_path = storage_path
 
     def _login(self):
-        url = config.KETSU_ENTRYPOINT + '/authentication'
+        url = config.KETSU_ENTRYPOINT + '/authentication/native'
         logging.info("POST %s", url)
         status_code = http_client.post(url,
                                        json={'user_name': config.KETSU_USERNAME,
