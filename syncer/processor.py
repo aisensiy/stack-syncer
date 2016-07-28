@@ -34,6 +34,10 @@ class Processor:
             logger.info("on stack created event no id or name")
             return
 
+        if 'status' in stack and stack['status'] != 'PUBLISHED':
+            logger.info("on stack created event unpublished stack found")
+            return
+
         status_code = http_client.post(config.KETSU_ENTRYPOINT + '/stacks',
                                        json={'id': stack['id'], 'name': stack['name']})
         logger.info("import stack %s %s get %d", stack['id'], stack['name'], status_code)
@@ -48,6 +52,8 @@ class Processor:
 
         status_code = http_client.put(config.KETSU_ENTRYPOINT + '/stacks/' + stack['id'], json={'name': stack['name']})
         logger.info("update stack %s %s get %d", stack['id'], stack['name'], status_code)
+        if status_code == 404:
+            self._create_stack(event)
 
     def load_last_event_id(self):
         if not os.path.isfile(config.LAST_EVENT_FILE):
