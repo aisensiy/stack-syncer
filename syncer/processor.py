@@ -70,7 +70,7 @@ class Processor:
         events = event_reader.read_events(config.CDE_EVENT_ENTRYPOINT, last_event_id)
         logger.info('events %d', len(events))
         for event in events:
-            if event['type'] == 'StackCreatedEvent':
+            if event['type'] == 'StackPublishedEvent':
                 self._create_stack(event)
             elif event['type'] == 'StackUpdatedEvent':
                 self._update_stack(event)
